@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "neuralWeb Builder",
+  "name": "Drag and drop page editor for neuralWeb",
   "icons": [
     {
       "src": "favicon.ico",
