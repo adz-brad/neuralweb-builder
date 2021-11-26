@@ -1,10 +1,23 @@
-import './App.css';
+import { EditorInterface, EditorMenu } from './components/editor'
 
 function App() {
-  return (
-    <div className="App">
 
+  return (
+
+    <div
+      id="app"
+      className="app"
+      style={{
+        height: "100vh",
+        width: "100%",
+        display: 'flex',
+        flexDirection:'row'
+      }}
+    >
+      <EditorMenu />
+      <EditorInterface />
     </div>
+
   );
 }
 
