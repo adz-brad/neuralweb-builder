@@ -1,4 +1,9 @@
+import React, { useState } from "react";
 import Split from "react-split";
+import { LiveProvider, LivePreview } from 'react-live'
+import Editor from 'react-simple-code-editor'
+import { highlight, languages } from 'prismjs'
+// import 'prism'
 
 const EditorMenu = () => {
   return(
@@ -10,14 +15,13 @@ const EditorMenu = () => {
 
 const EditorInterface = () => {
 
-  // Add a split in the builder for the 'Code Editor' that can be toggled
-  // Add JSX to HTML converter to get an HTML string from the existing JSX code
-  // Render HTML code in editor and elements in preview
+  const [ code, setCode ] = useState('')
 
   return (
     <div className="editorInterfaceWrapper">
       <div className="editorSubMenu glass">
       </div>
+      <LiveProvider code={code}>
       <div className="editorInterface glass">
           <Split
             style={{ display: "flex", flexDirection: "row", height: '100%' }}
@@ -25,10 +29,30 @@ const EditorInterface = () => {
             sizes={[50, 50]}
           >
             <div id="builderContainer">
+              <Split
+              style={{ display: "flex", flexDirection: "column", height: '100%', width: '100%' }}
+              direction="vertical"
+              gutterSize={6}
+              sizes={[70, 30]}
+              >
+                <div id="visualEditor">
+                  <input value={code} onChange={(e)=> setCode(e.target.value)}/>
+                </div>
+                <div id="codeEditor">
+                  <Editor
+                    value={code}
+                    onValueChange={(e)=> setCode(e.target.value)}
+                    highlight={ code => highlight(code, languages.js)}
+                  />
+                </div>
+              </Split>
             </div>
-            <div id="previewContainer" dangerouslySetInnerHTML={{ __html: null }} />
+            <div id="previewContainer">
+              <LivePreview />
+            </div>
         </Split>
       </div>
+      </LiveProvider>
     </div>
   );
 };
