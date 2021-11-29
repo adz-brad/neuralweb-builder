@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import Split from "react-split";
 import { LiveProvider, LivePreview } from 'react-live'
 import Editor from 'react-simple-code-editor'
-import { highlight, languages } from 'prismjs'
-// import 'prism'
+import '../../assets/files/prism.js'
+import '../../assets/files/prism.css'
 
 const EditorMenu = () => {
   return(
