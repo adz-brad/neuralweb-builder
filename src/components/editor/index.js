@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import Split from "react-split";
 import { LiveProvider, LivePreview } from 'react-live'
 import Editor from 'react-simple-code-editor'
-import '../../assets/files/prism.js'
-import '../../assets/files/prism.css'
+import { highlight, languages } from "prismjs/components/prism-core";
+import "prismjs/components/prism-clike";
+import "prismjs/components/prism-javascript";
+import "../../assets/files/prism.css";
 
 const EditorMenu = () => {
   return(
@@ -15,7 +17,15 @@ const EditorMenu = () => {
 
 const EditorInterface = () => {
 
-  const [ code, setCode ] = useState('')
+  const defaultMessage = 
+  `// 
+  
+  Welcome to the neuralWeb Editor. Drag and drop components to create your awesome new page OR if you're a pro, start coding in JSX!
+  
+  //
+  `;
+
+  const [ code, setCode ] = useState(`${defaultMessage}`)
 
   return (
     <div className="editorInterfaceWrapper">
@@ -36,13 +46,21 @@ const EditorInterface = () => {
               sizes={[70, 30]}
               >
                 <div id="visualEditor">
-                  <input value={code} onChange={(e)=> setCode(e.target.value)}/>
+                  
                 </div>
-                <div id="codeEditor">
+                <div id="codeEditor" style={{ background: '#111'}}>
                   <Editor
                     value={code}
-                    onValueChange={(e)=> setCode(e.target.value)}
-                    highlight={ code => highlight(code, languages.js)}
+                    onValueChange={(code) => setCode(code)}
+                    highlight={(code) => highlight(code, languages.js)}
+                    padding={10}
+                    style={{
+                      fontFamily: '"Fira code", "Fira Mono", monospace',
+                      fontSize: 12,
+                      background: '#111',
+                      color: '#eee',
+                      margin: '2px'
+                    }}
                   />
                 </div>
               </Split>

@@ -84,37 +84,22 @@ code {
   z-index:1;
 }
 
-#codeEditor{
+#codeEditor, #visualEditor{
   padding-top:2px;
   padding-bottom:2px;
-  background:black;
+  overflow-y:auto;
 }
 
 ::-webkit-scrollbar {
-  background:rgb(100 100 100 / 15%);
-  width:8px;
+  background: #111;
+  width:6px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgb(100 100 100 / 20%);
+  background: rgb(100 100 100);
 }
 
-:-webkit-scrollbar-thumb:hover {
-  background: blue;
-}
 
-.ace_gutter{
-  background:#111!important;
-  color:#eee!important;
-}
-
-.ace-monokai{
-  background: black!important;
-}
-
-.ace_scrollbar{
-  width:8px!important;
-}
 
 
 
