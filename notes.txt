@@ -1,0 +1,106 @@
+Page Builder Goals >>
+
+- Want each component to be resizable and moveable via drag function
+
+- Should be able to drag components between sections and between divs within sections, as well as within divs to reorder other components
+
+- Switch site themes using theme selector --> generates a custom class prefix
+
+An example of how a page would be built:
+
+- User drags a new section (essentially a component wrapper) onto the interface or clicks the "Add new section" button that will be displayed by default on empty pages. On click or drop, a new div is created that is styled using default settings for size, position, margin, padding, color, depending on the defined theme. These can all be edited by dragging to resize, or clicking on the "Edit" (pencil) button. Here they can edit all of props via input with a spot for code injection into the div. On page, the section appears as an empty box and in the editor renders the code for this component, showing all the props as they are edited. Users can also make changes here.
+
+- Afer creating a section, a user would want to add a layout component, most likely a grid or flex div. To do this, the user drags the 'FlexBox' component into the new section, or clicks the plus button in the section which brings up modal for what component to add. On click/drop, the div renders the same way the new section would, inside of the section itself and expanded to full width with a min height. Users can edit props the same as the section, and add components the same way they added the div. Additional editable props for a FlexBox div would include flex direction, etc. If it were a grid layout, they could change props like grid spacing, column/row template, etc.
+
+- If the user wanted to add a header, image and text to this new div, they would then add each component the same way as above, with all props editable in a similar manner, plus the ability to drag and drop components to reorder them.
+
+- For each component, the user needs to be able to set classes / styles for different breakpoints
+
+To dynamically render the code in the editor / live renderer, the "page" needs to be managed as an object. When a new section is added, it is added to the object, with it's index setting the order. When setions are dragged the index is modified to reflect the new order. So, when we go to render the visual components in the editor as well as the code, it needs to be modified live using functions. For example, if a user has three sections, A, B and C, rendered in that order, they are rendered by a functional component using the page data object:
+
+const RenderSections = () => {
+    pageData.sections.forEach((section, index) => {
+        return(
+            <Section>
+                { section.children !== null ?
+                    <>
+                        {section.children.forEach((child) => {
+                            return(
+                                {child.component}
+                            )
+                        })}
+                    </>
+                :
+                    <AddSection/>
+                }
+            </Section>
+        )
+    })
+}
+
+
+CREATE "ELEMENT" COMPONENT THAT CONDITIONALLY RENDERS EACH ELEMENT RECURSIVELY BY TYPE
+
+COMPONENT BAR --> Add, Edit + Delete Buttons
+
+Add Element -->
+Select From List of Element Types
+
+Config -->
+Set specific config for element (
+    - custom id 
+    - custom onClick
+    - custom props
+    - custom css
+    - custom styles
+    - custom script
+)
+
+Accounts -->
+
+- All accounts must be able to be transitioned between tiers
+
+
+Pricing -->
+
+Account Cost Tiers = Individual, Organization, Agency, Enterprise
+Project Costs = Calculated Based on Project tool bundles (Marketing Tools, etc)
+Component Costs = Calculated Based On Type + Usage
+
+Example -->
+
+Individual Accounts
+Free
+1 Project Free
+Additional Projects 100% Cost (based on site type + deployment)
+1 User Limit
+Scoped Themes + Components
+No Support, Only Docs
+
+
+Organization Accounts
+$20/mo
+1 Project Free
+Additional Projects 100% Cost
+5 User soft cap
+Scoped Themes + Components
+Limited Support, Docs
+
+
+Agency Accounts
+$99/mo
+Projects 100% Cost * Agency Discount
+10 User soft cap
+Global themes + Components
+Higher level support
+
+
+Enterprise Accounts
+Contact for pricing
+Projects 100% Cost * Enterprise Discount
+50 User soft cap 
+Global themes + Components
+24/7 Instant Support 
+
+
+

@@ -1,9 +1,10 @@
-import { EditorInterface, EditorMenu } from './components/editor'
+import { EditorInterface } from './components/editor'
+import { RecoilRoot } from 'recoil'
 
 function App() {
 
   return (
-
+  <RecoilRoot>
     <div
       id="app"
       className="app"
@@ -14,10 +15,9 @@ function App() {
         flexDirection:'row'
       }}
     >
-      <EditorMenu />
       <EditorInterface />
     </div>
-
+    </RecoilRoot>
   );
 }
 

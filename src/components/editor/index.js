@@ -1,78 +1,69 @@
-import React, { useState } from "react";
-import Split from "react-split";
-import { LiveProvider, LivePreview } from 'react-live'
-import Editor from 'react-simple-code-editor'
-import { highlight, languages } from "prismjs/components/prism-core";
-import "prismjs/components/prism-clike";
-import "prismjs/components/prism-javascript";
-import "../../assets/files/prism.css";
-
-const EditorMenu = () => {
-  return(
-    <div className="editorMenu glass">
-
-    </div>
-  )
-}
+import React, { useCallback } from "react";
+import update from 'immutability-helper';
+import Menu from "./components/Menu";
+import Editor from "./components/editor";
+import Renderer from './components/renderer'
+import { elementState } from '../../atoms'
+import { useRecoilState } from 'recoil'
 
 const EditorInterface = () => {
 
-  const defaultMessage = 
-  `// 
-  
-  Welcome to the neuralWeb Editor. Drag and drop components to create your awesome new page OR if you're a pro, start coding in JSX!
-  
-  //
-  `;
+  const [ elements, setElements ] = useRecoilState(elementState);
 
-  const [ code, setCode ] = useState(`${defaultMessage}`)
+  const section = {type: 'div', props: { className: 'adz-section' }, children: [
+       //{
+       //  type: 'ul',
+       //  props : { className: 'adz-list' },
+       //  children: [
+       //    {
+       //      type: 'li',
+       //      props: { className: 'adz-list-item' },
+       //      children: 'List Item 1'
+       //    },
+       //    {
+       //      type: 'li',
+       //      props: { className: 'adz-list-item' },
+       //      children: 'List Item 2'
+       //    }
+       //  ]
+       //}
+    ]
+  }
+
+  const addElement = (props) => {
+    const id = Math.floor(Math.random()*899999+100000)
+    const element = {
+      id: id,
+      type: props.type,
+      props: props.props,
+      children: props.children
+    } 
+    setElements(elements.concat(element));
+  };
+
+  const moveElement = useCallback((dragIndex, hoverIndex) => {
+    setElements((elements) =>
+      update(elements, {
+        $splice: [
+            [dragIndex, 1],
+            [hoverIndex, 0, elements[dragIndex]],
+        ],
+      }),
+   )
+  }, [ setElements ])
 
   return (
-    <div className="editorInterfaceWrapper">
-      <div className="editorSubMenu glass">
+    <>
+      <div className="editorInterfaceWrapper">
+          <Menu functions={{addElement: () => addElement(section)}}/>
+          <div className="flex flex-row h-full divide-x-4">
+              <Editor elements={elements} moveElement={moveElement} />
+              <Renderer elements={elements} />
+          </div>
+
       </div>
-      <LiveProvider code={code}>
-      <div className="editorInterface glass">
-          <Split
-            style={{ display: "flex", flexDirection: "row", height: '100%' }}
-            gutterSize={6}
-            sizes={[50, 50]}
-          >
-            <div id="builderContainer">
-              <Split
-              style={{ display: "flex", flexDirection: "column", height: '100%', width: '100%' }}
-              direction="vertical"
-              gutterSize={6}
-              sizes={[70, 30]}
-              >
-                <div id="visualEditor">
-                  
-                </div>
-                <div id="codeEditor" style={{ background: '#111'}}>
-                  <Editor
-                    value={code}
-                    onValueChange={(code) => setCode(code)}
-                    highlight={(code) => highlight(code, languages.js)}
-                    padding={10}
-                    style={{
-                      fontFamily: '"Fira code", "Fira Mono", monospace',
-                      fontSize: 12,
-                      background: '#111',
-                      color: '#eee',
-                      margin: '2px'
-                    }}
-                  />
-                </div>
-              </Split>
-            </div>
-            <div id="previewContainer">
-              <LivePreview />
-            </div>
-        </Split>
-      </div>
-      </LiveProvider>
-    </div>
-  );
+    </>
+  )
 };
 
-export { EditorMenu, EditorInterface }
+export { EditorInterface }
